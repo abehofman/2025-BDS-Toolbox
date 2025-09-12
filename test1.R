@@ -1,18 +1,61 @@
-save_player <- TRUE
-np <- 100
-ni=10
-N<-10000
-th_r <- rnorm(np, 0, 2); be_r <- runif(ni, -2, 2) 
-th_e <- numeric(np); be_e <- numeric(ni)
-th_e_save <- numeric()
-k <- .1
-for(i in 1:N) { ii <- sample(1:ni, 1); p <- sample(1:np, 1)
-  s <- sample(0:1, 1, prob = c(1 - plogis(th_r[p] - be_r[ii]), plogis(th_r[p] - be_r[ii])))
-  th_e[p] <- th_e[p] + k * (s - plogis(th_e[p] - be_e[ii]))
-  be_e[ii] <- be_e[ii] - k * (s - plogis(th_e[p] - be_e[ii]))
-  if(save_player) if(p == 1) th_e_save <- c(th_e_save, th_e[p])
-}
-plot(th_r, th_e)
-plot(th_e_save)
+# install.packages("lintr")
+library(lintr)
 
-lintr::lint("test1.R")
+# Configuration
+track_player_1 <- TRUE
+num_players <- 100
+num_items <- 10
+num_iterations <- 10000
+learning_rate <- 0.1
+
+# True ability and difficulty values
+true_ability <- rnorm(num_players, mean = 0, sd = 2)
+true_difficulty <- runif(num_items, min = -2, max = 2)
+
+# Estimated ability and difficulty values
+estimated_ability <- numeric(num_players)
+estimated_difficulty <- numeric(num_items)
+
+# Tracking learning of player 1
+player_1_trajectory <- numeric()
+
+# Simulation loop
+for (iteration in 1:num_iterations) {
+  item_id <- sample(1:num_items, 1)
+  player_id <- sample(1:num_players, 1)
+  
+  # Generate response based on true parameters
+  prob_correct <- plogis(true_ability[player_id] - true_difficulty[item_id])
+  response <- sample(0:1, 1, prob = c(1 - prob_correct, prob_correct))
+  
+  # Compute prediction and error based on current estimates
+  predicted_prob <- plogis(estimated_ability[player_id] 
+                           - estimated_difficulty[item_id])
+  error <- response - predicted_prob
+  
+  # Update estimates
+  estimated_ability[player_id] <- estimated_ability[player_id] + learning_rate * error
+  estimated_difficulty[item_id] <- estimated_difficulty[item_id] - learning_rate * error
+  
+  # Optionally track player 1's ability over time
+  if (track_player_1 && player_id == 1) {
+    player_1_trajectory <- c(player_1_trajectory, estimated_ability[player_id])
+  }
+}
+
+# Plot estimated vs. true abilities
+plot(true_ability, estimated_ability,
+     main = "True vs Estimated Ability",
+     xlab = "True Ability",
+     ylab = "Estimated Ability",
+     pch = 19, col = "blue")
+
+# Plot learning curve for player 1
+plot(player_1_trajectory,
+     main = "Learning Curve for Player 1",
+     xlab = "Iteration",
+     ylab = "Estimated Ability of Player 1",
+     pch = 19, col = "green")
+
+# Lint the current script
+lint("test1.R")
