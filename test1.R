@@ -55,7 +55,7 @@ plot(player_1_trajectory,
      main = "Learning Curve for Player 1",
      xlab = "Iteration",
      ylab = "Estimated Ability of Player 1",
-     pch = 19, col = "green")
+     pch = 19, col = "red")
 
 # Lint the current script
 lint("test1.R")
