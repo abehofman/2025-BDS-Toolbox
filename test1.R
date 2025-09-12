@@ -16,3 +16,5 @@ plot(th_r, th_e)
 plot(th_e_save)
 
 lintr::lint("test1.R")
+
+#test 1
