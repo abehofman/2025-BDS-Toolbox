@@ -2,8 +2,10 @@ save_player <- TRUE
 np <- 100
 ni <- 10
 N <- 10000
-th_r <- rnorm(np, 0, 2); be_r <- runif(ni, -2, 2) 
-th_e <- numeric(np); be_e <- numeric(ni)
+th_r <- rnorm(np, 0, 2)
+be_r <- runif(ni, -2, 2) 
+th_e <- numeric(np)
+be_e <- numeric(ni)
 th_e_save <- numeric()
 k <- .1
 for(i in 1:N) { ii <- sample(1:ni, 1); p <- sample(1:np, 1)
