@@ -1,7 +1,7 @@
 save_player <- TRUE
 np <- 100
 ni <- 10
-N<-10000
+N <-10000
 th_r <- rnorm(np, 0, 2); be_r <- runif(ni, -2, 2) 
 th_e <- numeric(np); be_e <- numeric(ni)
 th_e_save <- numeric()
