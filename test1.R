@@ -15,4 +15,7 @@ for(i in 1:N) { ii <- sample(1:ni, 1); p <- sample(1:np, 1)
 plot(th_r, th_e)
 plot(th_e_save)
 
+#commment
+
+
 lintr::lint("test1.R")
